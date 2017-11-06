@@ -3,7 +3,7 @@
 This project is an exercise as part of the **Full Stack Web Developer Nanodegree**,
 by **Udacity**. It creates a report from the analysis of a database, prints the analysis and also builds a file with the result.
 
-The database contains newspaper articles, as well as the web server log genetared from a newspaper site. The log has a database row for each time a reader loaded a web page. Using that information, the  code will answer questions about the site's user activity.
+The database contains newspaper articles, as well as the web server log generated from a newspaper site. The log has a database row for each time a reader loaded a web page. Using that information, the  code will answer questions about the site's user activity.
 
 The report will show:
 - The most popular three articles of all time.
@@ -13,7 +13,7 @@ The report will show:
 # Installation
 
 * Before running the report, we need to access the database `news` with the
-`psql` command (you need to get **PostgreSQL** instaled), and create some `views`
+`psql` command (you need to get **PostgreSQL** installed), and create some `views`
  in the database:
 
         psql news
@@ -42,7 +42,7 @@ In the case of the course, it is a `vagrant` virtual machine. So, for the progra
   - open a remote terminal with the `vagrant ssh` command
   - in remote machine, using the terminal, go to the `\vagrant` directory
   - check to see if the `logs_analysi.py` is there
-  - in remote machine, run the python conde with `python3 logs_analysis.py`
+  - in remote machine, run the python code with `python3 logs_analysis.py`
 * The program will print the analysis and also generate a file `report.txt`.
 * After finishing, `exit` from remote terminal and type `vagrant halt` in the **Git Bash** local shell to turn off the virtual machine.
 * The results of the report can be accessed in the `report.txt` file on your `\vagrant` local directory.
