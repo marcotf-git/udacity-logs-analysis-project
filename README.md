@@ -1,7 +1,6 @@
 # Logs Analysis Reporting Tool
 
-This project is an exercise as part of the **Full Stack Web Developer Nanodegree**,
-by **Udacity**. It creates a report from the analysis of a database, prints the analysis and also builds a file with the result.
+This project is an exercise as part of the **Full Stack Web Developer Nanodegree**, by **Udacity**. It creates a report from the analysis of a database, prints the analysis and also builds a file with the result.
 
 The database contains newspaper articles, as well as the web server log generated from a newspaper site. The log has a database row for each time a reader loaded a web page. Using that information, the  code will answer questions about the site's user activity.
 
@@ -12,30 +11,53 @@ The report will show:
 
 # Installation
 
-* Before running the report, we need to access the database `news` with the
-`psql` command (you need to get **PostgreSQL** installed), and create some `views`
- in the database:
+* The project makes use of a Linux-based virtual machine (VM). To install this machine, please:
+
+  1. Install **VirtualBox**: <ttps://www.virtualbox.org/wiki/Download_Old_Builds_5_1>
+  2. Install **Vagrant** (for automated building the VM according with some set of configurations): <https://www.vagrantup.com/>
+  3. Make a directory at local machine, for the project;
+  4. Download the file `Vagrantfile`, that is a configuration file for the VM, created by **Udacity** for the course (this file will be accessed by the **Vagrant** to build the VM):
+  <https://github.com/udacity/fullstack-nanodegree-vm>
+  5. Put the file `Vagrantfile` in the local directory that you created for the project;
+  6. With a **Git Bash** terminal, go to that directory (where the `Vagrantfile` is) and command `vagrant up`. 
+
+* The previous steps will create the VM, with the database `news`.
+* The `vagrant` directory is automatically installed by **Vagrant** as a shared directory between the local machine and the VM. So, it is easy to share files between them.👍
+* The database `news` was created automatically by the `Vagrantfile`, at the VM, but we need to setup the database before using by the report.
+
+* Setting up the database:
+
+
+  1. Get the file `newsdata.sql` from the repository <https://github.com/udacity/fullstack-nanodegree-vm> and save in your local machine, at the `vagrant` shared directory, and `unzip` the file;
+  2. Turn on the VM with command `vagrant up` in your local machine at the **Git Bash**;
+  3. Log into the VM with command `vagrant ssh` typed at the **Git Bash**;
+  4. In the VM, go to `vagrant` directory, and load the schema and data for the `news` database, with the command `psql -d news -f newsdata.sql` (you are using the **PostgreSQL** that was already automatically installed when creating the VM).
+
+
+* Before running the report, we need to access the database `news` with the `psql` command (from the **PostgreSQL**), and create some `views` in the database:
 
         psql news
 
-        create view totalqueries as
-        select to_char(time, 'Mon DD, YYYY') as day, count(*) as num
-        from log
-        group by day;
+    ```sql
+    CREATE VIEW totalqueries AS
+    SELECT to_char(time, 'Mon DD, YYYY') AS day, count(*) AS num
+    FROM log
+    GROUP BY day;
+    ```
+    ```sql
+    CREATE VIEW errorqueries AS
+    SELECT to_char(time, 'Mon DD, YYYY') AS day, count(*) AS num
+    FROM log
+    WHERE status != '200 OK'
+    GROUP BY day;   
+    ```
 
-        create view errorqueries as
-        select to_char(time, 'Mon DD, YYYY') as day, count(*) as num
-        from log
-        where status != '200 OK'
-        group by day;    
-
-* You need to put the `logs_analysis.py` file in the same machine as the database is installed.
-In the case of the course, it is a `vagrant` virtual machine. So, for the program be accessed by the virtual machine, you need to copy the `logs_analysis.py` to the `\vagrant` directory that was previously created when installing the `vagrant` virtual machine (that is a shared folder of `vagrant` virtual machine with your local machine).
+* You need to copy the **Python** program `logs_analysis.py` to the same machine as the database `news`. So, copy the `logs_analysis.py` to the `\vagrant` local directory, because that directory is a shared folder with the VM.
 
 
 # Common usage
 
-* After creating the views, run the `logs_analysis.py` in the virtual machine, where the database is installed (you need to get **Python** installed first):
+* After creating the views, run the `logs_analysis.py` in the VM, where the database is installed (**Python** is already installed in the VM):
   - use a **Git Bash** shell (if you are in **Windows**)
   - with that shell, go to the `\vagrant` directory that was previously created when installing the `vagrant` virtual machine
   - run the virtual machine with `vagrant up` command
